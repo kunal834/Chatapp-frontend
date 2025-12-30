@@ -3,12 +3,14 @@ import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 import axios from "axios";
 
-
-const backendUrl = 'http://localhost:5000';
-
+if(import.meta.env.NODE_ENV !== 'development'){
+const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+}
 
 axios.defaults.baseURL = backendUrl;
 axios.defaults.withCredentials = true; 
+
+
 
 export const AuthContext = createContext();
 
@@ -24,6 +26,7 @@ export const AuthProvider = ({ children }) => {
     
 useEffect(() => {
         console.log("Online Users Updated:", OnlineUsers);
+        console.log("Backend URL:", backendUrl);
     }, [OnlineUsers]);
 
     const checkAuth = async () => {
